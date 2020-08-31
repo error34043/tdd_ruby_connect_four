@@ -62,6 +62,10 @@ class Board
     board
   end
 
+  def top_row
+    "   1    2    3    4    5    6    7  ".green
+  end
+
   def divider
     "#{MID_LEFT_BOX}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{MID_BOX}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{MID_BOX}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{MID_BOX}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{MID_BOX}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{MID_BOX}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{MID_BOX}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{LINE_HORIZONTAL}#{MID_RIGHT_BOX}"
   end
@@ -84,7 +88,7 @@ class Board
   end
 
   def display(_ = @board)
-    entire_board = [starter]
+    entire_board = ["\n", top_row, starter]
     @board.each do |row|
       entire_board << row_display(row)
       entire_board << divider
@@ -92,7 +96,7 @@ class Board
     entire_board.pop
     entire_board << ender
     entire_board.each do |pretty_row|
-      puts pretty_row
+      puts "\t\t\t\t\t#{pretty_row}"
     end
   end
 
@@ -125,7 +129,7 @@ class Board
     column_arr.each_with_index do |cell, index|
       @board[index][move] = cell
     end
-    @board
+    true
   end
 
   def win_horizontal?
