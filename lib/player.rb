@@ -15,14 +15,15 @@ class Player
     @win = false
   end
 
-  def input_name
+  def input_name_of_player(player_number)
+    puts "\nPlayer #{player_number}, what is your name?".teal
     print '[name]: '
     name = gets.chomp
     @name = name
   end
 
   def show_token_options
-    puts "Welcome, #{@name}! Please choose one of the following tokens to play using."
+    puts "\nWelcome, #{@name}! Please choose one of the following tokens to play using.".teal
     puts "1. #{TOKENS[1]}\t\t2. #{TOKENS[2]}\t\t3. #{TOKENS[3]}\n4. #{TOKENS[4]}\t\t5. #{TOKENS[5]}\t\t6. #{TOKENS[6]}"
   end
 
@@ -33,6 +34,8 @@ class Player
   end
 
   def input_token
+    show_token_options
+    puts ''
     loop do
       print '[Token choice]: '
       chosen_token = gets.chomp.to_i
@@ -42,8 +45,8 @@ class Player
         @token = TOKENS[chosen_token]
         break
       end
-      puts 'Please choose a token from the list above that has not been chosen by the other player!'.red if valid == false
-      puts 'Please choose a token from the given list and input your choice as a number between 1 and 6.'.red if valid == nil
+      puts "\nPlease choose a token that has not been chosen by the other player!".red if valid == false
+      puts "\nPlease input your choice as a number between 1 and 6.".red if valid == nil
     end
   end
 
@@ -51,3 +54,14 @@ class Player
     @win = true
   end
 end
+
+test = Player.new
+test.input_name_of_player(1)
+test.input_token
+puts test.name
+puts test.token
+test2 = Player.new
+test2.input_name_of_player(2)
+test2.input_token
+puts test2.name
+puts test2.token
