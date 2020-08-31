@@ -54,14 +54,3 @@ class Player
     @win = true
   end
 end
-
-test = Player.new
-test.input_name_of_player(1)
-test.input_token
-puts test.name
-puts test.token
-test2 = Player.new
-test2.input_name_of_player(2)
-test2.input_token
-puts test2.name
-puts test2.token
