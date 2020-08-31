@@ -79,14 +79,6 @@ class GamePlay < Board
     false
   end
 
-  def valid_replay_response?
-
-  end
-
-  def replay?
-
-  end
-
   def play_game
     # Set @activeplayer.win = true in here. Call the win/tie methods appropriately. Call #switch_active_player only after running that check. Break if the check returns true.
     #if game_over
@@ -95,8 +87,13 @@ class GamePlay < Board
     #end
   end
 
+  def valid_replay_response?
+  end
+
+  def replay?
+  end
+
   def game
-    
   end
 end
 
