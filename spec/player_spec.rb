@@ -9,7 +9,7 @@ describe Player do
   describe '#valid_token' do
     context 'when the token chosen is available' do
       it 'returns true' do
-        expect(player.valid_token?(1)).to be true
+        expect(player.valid_token?(2)).to be true
       end
     end
 
