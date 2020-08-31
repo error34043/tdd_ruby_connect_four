@@ -189,36 +189,3 @@ class Board
     win_horizontal? || win_vertical? || win_diagonal?
   end
 end
-
-=begin
-test = Board.new
-print "Which column? "
-p test.add_move_to_board(gets.chomp.to_i, "\u2b24".red)
-test.display
-
-column = column_input.to_i - 1
-  column_arr = []
-  test.board.each do |row|
-    column_arr << row[column]
-  end
-  (column_arr.length - 1).downto(0) do |index|
-    if column_arr[index] == '    '
-      column_arr[index] = " #{test.test_print}  "
-      break
-    end
-  end
-  column_arr.each_with_index do |cell, index|
-    test.board[index][column] = cell
-  end
-test.display
-
-
-test = Board.new
-test.board[0][0] = ' XX '
-test.board[1][1] = ' XX '
-test.board[2][2] = ' XX '
-test.board[3][3] = ' XX '
-p test.check_diagonal(0, 0)
-puts ''
-test.display
-=end
