@@ -6,7 +6,7 @@ The game was programmed with a TDD style in mind and all of the specs can be fou
 
 ## To play online
 
-You and a friend can play online by going [here]().
+You and a friend can play online by going [here](https://tddrubyconnectfour.error34043.repl.run).
 
 ## To play in your system's terminal
 
