@@ -117,28 +117,14 @@ describe Board do
           ])
         end
 
-        it 'returns updated board' do
-          expect(board.add_move_to_board(1, 'X')).to eql([
-            [' X  ', ' XX ', '    ', '    ', '    ', '    ', ' XX '],
-            [' XX ', ' XX ', '    ', ' XX ', '    ', '    ', ' XX '],
-            [' XX ', ' XX ', '    ', ' XX ', ' XX ', '    ', ' XX '],
-            [' XX ', ' XX ', ' XX ', ' XX ', ' XX ', '    ', ' XX '],
-            [' XX ', ' XX ', ' XX ', ' XX ', ' XX ', ' XX ', ' XX '],
-            [' XX ', ' XX ', ' XX ', ' XX ', ' XX ', ' XX ', ' XX ']
-          ])
+        it 'returns true' do
+          expect(board.add_move_to_board(1, 'X')).to be true
         end
       end
 
       context 'when column is empty' do
-        it 'returns updated board' do
-          expect(board.add_move_to_board(1, 'X')).to eql [
-            ['    ', '    ', '    ', '    ', '    ', '    ', '    '],
-            ['    ', '    ', '    ', '    ', '    ', '    ', '    '],
-            ['    ', '    ', '    ', '    ', '    ', '    ', '    '],
-            ['    ', '    ', '    ', '    ', '    ', '    ', '    '],
-            ['    ', '    ', '    ', '    ', '    ', '    ', '    '],
-            [' X  ', '    ', '    ', '    ', '    ', '    ', '    ']
-          ]
+        it 'returns true' do
+          expect(board.add_move_to_board(1, 'X')).to be true
         end
       end
     end

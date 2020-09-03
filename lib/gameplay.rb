@@ -13,10 +13,27 @@ class GamePlay < Board
   @game_complete = false
   @game_won = false
 
+
+  def game
+    play_time = true
+    start_new_game
+    loop do
+      single_round
+      play_time = replay?
+      break if play_time == false
+      @game_board = Board.new
+      @players.each { |player| player.win = false }
+      system 'clear'
+    end
+    puts leave_message
+  end
+
   def initialize
     @game_board = Board.new
     @players = []
   end
+
+  private
 
   def add_player(player_number)
     new_player = Player.new
@@ -30,7 +47,6 @@ class GamePlay < Board
     puts introduction
     add_player(1)
     add_player(2)
-    @active_player = @players[0]
     system 'clear'
   end
 
@@ -58,10 +74,12 @@ class GamePlay < Board
   def win
     @winner = @players.find { |player| player.win == true }
     @loser = @players.find { |player| player.win == false }
+    @game_board.display
     puts win_message(@winner.name, @loser.name)
   end
 
   def tie
+    @game_board.display
     puts tie_message(@players[0].name, @players[1].name)
   end
 
@@ -70,36 +88,43 @@ class GamePlay < Board
       @active_player.fix_winner
       @game_complete = true
       @game_won = true
-      true
+      return true
     elsif @game_board.filled_up?
       @game_complete = true
       @game_won = false
-      true
+      return true
     end
     false
   end
 
-  def play_game
-    # Set @activeplayer.win = true in here. Call the win/tie methods appropriately. Call #switch_active_player only after running that check. Break if the check returns true.
-    #if game_over
-      #@game_won ? win : tie
-      #break
-    #end
+  def single_round
+    @active_player = @players[1]
+    loop do
+      if game_over
+        @game_won ? win : tie
+        break
+      end
+      switch_active_player
+      turn
+    end
   end
 
-  def valid_replay_response?
+  def valid_replay_response?(response)
+    response.downcase == 'y' || response.downcase == 'yes' || response.downcase == 'n' || response.downcase == 'no'
   end
 
   def replay?
-  end
-
-  def game
+    puts "\nWould you both like to play again?".teal
+    keep_playing = ''
+    loop do
+      print '[yes/no]: '
+      keep_playing = gets.chomp
+      break if valid_replay_response?(keep_playing)
+      puts "\nI'm sorry, I don't understand. Please say either yes or no.".red
+    end
+    (keep_playing.downcase == 'y' || keep_playing.downcase == 'yes') ? true : false
   end
 end
 
-test = GamePlay.new
-test.start_new_game
-test.turn
-test.switch_active_player
-test.turn
-test.turn
+# test = GamePlay.new
+# test.game

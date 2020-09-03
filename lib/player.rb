@@ -22,17 +22,6 @@ class Player
     @name = name
   end
 
-  def show_token_options
-    puts "\nWelcome, #{@name}! Please choose one of the following tokens to play using.".teal
-    puts "1. #{TOKENS[1]}\t\t2. #{TOKENS[2]}\t\t3. #{TOKENS[3]}\n4. #{TOKENS[4]}\t\t5. #{TOKENS[5]}\t\t6. #{TOKENS[6]}"
-  end
-
-  def valid_token?(token_number)
-    return nil unless token_number.between?(1, 6)
-    chosen_token = TOKENS[token_number]
-    !@@taken_tokens.include?(chosen_token)
-  end
-
   def input_token
     show_token_options
     puts ''
@@ -52,5 +41,18 @@ class Player
 
   def fix_winner
     @win = true
+  end
+
+  private
+
+  def show_token_options
+    puts "\nWelcome, #{@name}! Please choose one of the following tokens to play using.".teal
+    puts "1. #{TOKENS[1]}\t\t2. #{TOKENS[2]}\t\t3. #{TOKENS[3]}\n4. #{TOKENS[4]}\t\t5. #{TOKENS[5]}\t\t6. #{TOKENS[6]}"
+  end
+
+  def valid_token?(token_number)
+    return nil unless token_number.between?(1, 6)
+    chosen_token = TOKENS[token_number]
+    !@@taken_tokens.include?(chosen_token)
   end
 end

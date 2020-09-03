@@ -50,6 +50,112 @@ class Board
     @board = generate_empty_board
   end
 
+  def display(_ = @board)
+    entire_board = ["\n", top_row, starter]
+    @board.each do |row|
+      entire_board << row_display(row)
+      entire_board << divider
+    end
+    entire_board.pop
+    entire_board << ender
+    entire_board.each do |pretty_row|
+      puts "\t\t\t\t\t#{pretty_row}"
+    end
+  end
+
+  def valid_move?(move)
+    move -= 1
+    return false unless (0..7).include?(move)
+    column_arr = generate_column_array(move)
+    return false unless column_arr.include?('    ')
+    true
+  end
+
+  def add_move_to_board(move, user_token)
+    return false unless valid_move?(move)
+    move -= 1
+    column_arr = generate_column_array(move)
+    (column_arr.length - 1).downto(0) do |index|
+      if column_arr[index] == '    '
+        column_arr[index] = " #{user_token}  "
+        break
+      end
+    end
+    column_arr.each_with_index do |cell, index|
+      @board[index][move] = cell
+    end
+    true
+  end
+
+  def filled_up?
+    row_tests = []
+    @board.each do |row|
+      row_tests << row.include?('    ') ? true : false
+    end
+    !row_tests.include?(true)
+  end
+
+  def win_horizontal?
+    @board.each do |row|
+      for i in (0..3) do
+        test_row = row.slice(i, 4)
+        elements_in_test = test_row.uniq
+        return true if elements_in_test.length == 1 && !elements_in_test.include?('    ')
+      end
+    end
+    false
+  end
+
+  def win_vertical?
+    for i in (0..6) do
+      test_column = generate_column_array(i)
+      number_of_tokens = test_column.chunk { |ele| ele }.map { |token, appearances| [token, appearances.length] }
+      (number_of_tokens.length - 1).downto(0) do |index|
+        if number_of_tokens[index].include?('    ')
+          number_of_tokens.delete_at(index) 
+          next
+        end
+        return true if number_of_tokens[index].include?(4)
+      end
+    end
+    false
+  end
+
+  def win_diagonal?
+    for i in (0..5) do
+      for j in (0..6) do
+        return true if check_diagonal(i, j)
+      end
+    end
+    false
+  end
+
+  def victory?
+    win_horizontal? || win_vertical? || win_diagonal?
+  end
+
+  private
+
+  def check_diagonal(row, column)
+    row_shift = row.between?(0, 2) ? 1 : -1
+    column_shift = column.between?(0, 3) ? 1 : -1
+    four_in_line = []
+    0.upto(3) do |i|
+      four_in_line << @board[row + (row_shift * i)][column + (column_shift * i)]
+    end
+    test_elements = four_in_line.uniq
+    return true if test_elements.length == 1 && !test_elements.include?('    ')
+    false
+  end
+
+  def generate_column_array(column)
+    column_arr = []
+    @board.each do |row|
+      column_arr << row[column]
+    end
+    column_arr
+  end
+
   def row
     row_arr = []
     7.times { row_arr << '    ' }
@@ -85,109 +191,5 @@ class Board
       row_str << "#{LINE_VERTICAL}"
     end
     row_str = row_str.join('')
-  end
-
-  def display(_ = @board)
-    entire_board = ["\n", top_row, starter]
-    @board.each do |row|
-      entire_board << row_display(row)
-      entire_board << divider
-    end
-    entire_board.pop
-    entire_board << ender
-    entire_board.each do |pretty_row|
-      puts "\t\t\t\t\t#{pretty_row}"
-    end
-  end
-
-  def generate_column_array(column)
-    column_arr = []
-    @board.each do |row|
-      column_arr << row[column]
-    end
-    column_arr
-  end
-
-  def valid_move?(move)
-    move -= 1
-    return false unless (0..7).include?(move)
-    column_arr = generate_column_array(move)
-    return false unless column_arr.include?('    ')
-    true
-  end
-
-  def add_move_to_board(move, user_token)
-    return false unless valid_move?(move)
-    move -= 1
-    column_arr = generate_column_array(move)
-    (column_arr.length - 1).downto(0) do |index|
-      if column_arr[index] == '    '
-        column_arr[index] = " #{user_token}  "
-        break
-      end
-    end
-    column_arr.each_with_index do |cell, index|
-      @board[index][move] = cell
-    end
-    true
-  end
-
-  def win_horizontal?
-    @board.each do |row|
-      for i in (0..3) do
-        test_row = row.slice(i, 4)
-        elements_in_test = test_row.uniq
-        return true if elements_in_test.length == 1 && !elements_in_test.include?('    ')
-      end
-    end
-    false
-  end
-
-  def win_vertical?
-    for i in (0..6) do
-      test_column = generate_column_array(i)
-      number_of_tokens = test_column.chunk { |ele| ele }.map { |token, appearances| [token, appearances.length] }
-      (number_of_tokens.length - 1).downto(0) do |index|
-        if number_of_tokens[index].include?('    ')
-          number_of_tokens.delete_at(index) 
-          next
-        end
-        return true if number_of_tokens[index].include?(4)
-      end
-    end
-    false
-  end
-
-  def check_diagonal(row, column)
-    row_shift = row.between?(0, 2) ? 1 : -1
-    column_shift = column.between?(0, 3) ? 1 : -1
-    four_in_line = []
-    0.upto(3) do |i|
-      four_in_line << @board[row + (row_shift * i)][column + (column_shift * i)]
-    end
-    test_elements = four_in_line.uniq
-    return true if test_elements.length == 1 && !test_elements.include?('    ')
-    false
-  end
-
-  def win_diagonal?
-    for i in (0..5) do
-      for j in (0..6) do
-        return true if check_diagonal(i, j)
-      end
-    end
-    false
-  end
-
-  def filled_up?
-    row_tests = []
-    @board.each do |row|
-      row_tests << row.include?('    ') ? true : false
-    end
-    !row_tests.include?(true)
-  end
-
-  def victory?
-    win_horizontal? || win_vertical? || win_diagonal?
   end
 end
